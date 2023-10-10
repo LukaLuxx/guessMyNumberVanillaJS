@@ -2,8 +2,11 @@
 
 let secretNumber = Math.trunc(Math.random() * 20) + 1;
 let score = 20;
-
 let highscore = 0;
+
+const displayMessage = function (message) {
+    document.querySelector(".message").textContent = message;
+};
 
 function underlineText() {
     const element = document.querySelector(".message");
@@ -17,16 +20,22 @@ function removeUnderline() {
     element.style.textDecorationColor = "initial";
 }
 
+const messageElement = document.querySelector(".message");
+const scoreElement = document.querySelector(".score");
+const numberElement = document.querySelector(".number");
+const guessElement = document.querySelector(".guess");
+
 document.querySelector(".again").addEventListener("click", function () {
     score = 20;
     secretNumber = Math.trunc(Math.random() * 20) + 1;
-    document.querySelector(".message").textContent = "Start guessing...";
 
-    document.querySelector(".score").textContent = score;
-    document.querySelector(".number").textContent = "?";
-    document.querySelector(".guess").value = "";
+    displayMessage("Start guessing...");
+
+    scoreElement.textContent = score;
+    numberElement.textContent = "?";
+    guessElement.value = "";
     document.querySelector("body").style.backgroundColor = "black";
-    document.querySelector(".number").style.width = "15rem";
+    numberElement.style.width = "15rem";
     removeUnderline();
 });
 
@@ -37,30 +46,29 @@ document.querySelector(".check").addEventListener("click", function () {
     }
 
     if (!guess) {
-        document.querySelector(".message").textContent = "No number ⛔";
+        displayMessage("No number ⛔");
     } else if (guess === secretNumber) {
-        document.querySelector(".message").textContent =
-            "Bingo! Correct number🎉";
+        displayMessage("Bingo! Correct number🎉");
         underlineText();
-        document.querySelector(".number").style.width = "30rem";
-        document.querySelector(".number").textContent = secretNumber;
+        numberElement.style.width = "30rem";
+        numberElement.textContent = secretNumber;
         if (score > highscore) {
             highscore = score;
             document.querySelector(".highscore").textContent = highscore;
         }
     } else if (guess !== secretNumber) {
         if (score > 1) {
-            document.querySelector(".message").textContent =
+            displayMessage(
                 guess > secretNumber
                     ? "Number is to high📈"
-                    : "Number is too low📉";
+                    : "Number is too low📉"
+            );
             score--;
-            document.querySelector(".score").textContent = score;
+            scoreElement.textContent = score;
         } else {
-            document.querySelector(".message").textContent =
-                "💣 You lost the game!";
+            displayMessage("💣 You lost the game!");
 
-            document.querySelector(".score").textContent = 0;
+            scoreElement.textContent = 0;
             document.body.style.background = "red";
         }
     }
